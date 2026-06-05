@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
 
 export default function EnviarAtividade() {
   const [categoria, setCategoria] = useState("");
@@ -18,6 +19,7 @@ export default function EnviarAtividade() {
   const [horas, setHoras] = useState("");
   const [arquivo, setArquivo] = useState(null);
 
+  // 📁 Galeria / arquivos
   async function selecionarArquivo() {
     try {
       const resultado = await DocumentPicker.getDocumentAsync({
@@ -32,11 +34,31 @@ export default function EnviarAtividade() {
     }
   }
 
+  // 📷 Tirar foto
+  async function tirarFoto() {
+    try {
+      const permission = await ImagePicker.requestCameraPermissionsAsync();
+
+      if (!permission.granted) {
+        Alert.alert("Permissão negada", "Permita o uso da câmera.");
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        setArquivo(result.assets[0]);
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível abrir a câmera.");
+    }
+  }
+
   function enviarAtividade() {
-    Alert.alert(
-      "Sucesso",
-      "Atividade enviada com sucesso!"
-    );
+    Alert.alert("Sucesso", "Atividade enviada com sucesso!");
   }
 
   return (
@@ -52,23 +74,33 @@ export default function EnviarAtividade() {
           Comprovante / Certificado
         </Text>
 
+        {/* BOTÃO GALERIA */}
         <TouchableOpacity
           style={styles.fileButton}
           onPress={selecionarArquivo}
         >
           <Text style={styles.fileButtonText}>
-            Escolher Arquivo
+            Escolher da Galeria / Arquivo
+          </Text>
+        </TouchableOpacity>
+
+        {/* BOTÃO CÂMERA */}
+        <TouchableOpacity
+          style={[styles.fileButton, { marginTop: 10, backgroundColor: "#D1E8FF" }]}
+          onPress={tirarFoto}
+        >
+          <Text style={styles.fileButtonText}>
+            Tirar Foto
           </Text>
         </TouchableOpacity>
 
         {arquivo && (
           <Text style={styles.fileName}>
-            Arquivo: {arquivo.name}
+            Arquivo: {arquivo.name || "Foto selecionada"}
           </Text>
         )}
-        <Text style={styles.label}>
-          Categoria
-        </Text>
+
+        <Text style={styles.label}>Categoria</Text>
 
         <TextInput
           style={styles.input}
@@ -77,9 +109,7 @@ export default function EnviarAtividade() {
           onChangeText={setCategoria}
         />
 
-        <Text style={styles.label}>
-          Tipo de Atividade
-        </Text>
+        <Text style={styles.label}>Tipo de Atividade</Text>
 
         <TextInput
           style={styles.input}
@@ -88,9 +118,7 @@ export default function EnviarAtividade() {
           onChangeText={setTipo}
         />
 
-        <Text style={styles.label}>
-          Descrição
-        </Text>
+        <Text style={styles.label}>Descrição</Text>
 
         <TextInput
           style={styles.textArea}
@@ -101,9 +129,7 @@ export default function EnviarAtividade() {
           onChangeText={setDescricao}
         />
 
-        <Text style={styles.label}>
-          Quantidade de Horas
-        </Text>
+        <Text style={styles.label}>Quantidade de Horas</Text>
 
         <TextInput
           style={styles.input}

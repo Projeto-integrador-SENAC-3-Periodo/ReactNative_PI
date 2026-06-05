@@ -9,6 +9,7 @@ import DashboardScreen from './src/screens/DashboardScreens';
 import EnviarScreen from './src/screens/EnviarScreen';
 import HorasScreen from './src/screens/HorasScreen';
 import PerfilScreen from './src/screens/PerfilScreen';
+import EsqueceusenhaScreen from './src/screens/EsqueceusenhaScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,10 +46,25 @@ function TabRoutes() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Dashboard" component={DashboardScreen} />
-      <Tab.Screen name="Enviar" component={EnviarScreen} />
-      <Tab.Screen name="Horas" component={HorasScreen} />
-      <Tab.Screen name="Perfil" component={PerfilScreen} />
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+      />
+
+      <Tab.Screen
+        name="Enviar"
+        component={EnviarScreen}
+      />
+
+      <Tab.Screen
+        name="Horas"
+        component={HorasScreen}
+      />
+
+      <Tab.Screen
+        name="Perfil"
+        component={PerfilScreen}
+      />
     </Tab.Navigator>
   );
 }
@@ -57,8 +73,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={TabRoutes} />
+
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+        />
+
+        <Stack.Screen
+          name="Esqueceusenha"
+          component={EsqueceusenhaScreen}
+        />
+
+        <Stack.Screen
+          name="Home"
+          component={TabRoutes}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
