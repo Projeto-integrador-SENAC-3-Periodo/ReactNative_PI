@@ -26,7 +26,9 @@ export default function Dashboard() {
         listarAtividadesAluno(user.id, user.token),
       ]);
       setHoras(horasData);
-      setAtividades(atividadesData || []);
+      // Filtra apenas as atividades do curso selecionado
+      const doCurso = (atividadesData || []).filter(a => a.idCurso === cursoAtivo.idCurso);
+      setAtividades(doCurso);
     } catch (e) {
       Alert.alert('Erro', e.message || 'Falha ao carregar dados.');
     } finally {
@@ -142,107 +144,26 @@ export default function Dashboard() {
 }
 
 const s = StyleSheet.create({
-  container:{ 
-    flex: 1,
-    backgroundColor: '#F3F4F6'
-  },
-  center:{ 
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center' },
-  header:{ 
-    backgroundColor: '#0F2557', 
-    paddingTop: 60, 
-    paddingBottom: 10, 
-    borderBottomWidth: 3, 
-    borderBottomColor: '#F97316' },
-  headerTitle:{ 
-    color: '#FFF', 
-    fontSize: 24, 
-    fontWeight: 'bold', 
-    textAlign: 'center' },
-  headerSub:{ 
-    color: '#CBD5E1', 
-    fontSize: 13, 
-    textAlign: 'center', 
-    marginTop: 4 },
-  mainCard:{ 
-    backgroundColor: '#0F2557', 
-    margin: 10, 
-    borderRadius: 12, 
-    padding: 15 },
-  cardTitle:{ 
-    color: '#FFF', 
-    fontSize: 13, 
-    marginBottom: 6 },
-  row:{ 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center' },
-  hours:{ 
-    color: '#FFF', 
-    fontSize: 26, 
-    fontWeight: 'bold' },
-  total:{ 
-    fontSize: 18 },
-  circle:{ 
-    width: 50, 
-    height: 50, 
-    borderWidth: 2, 
-    borderColor: '#FFF', 
-    borderRadius: 25, 
-    justifyContent: 'center', 
-    alignItems: 'center' },
-  circleText:{ 
-    color: '#FFF', 
-    fontWeight: 'bold', 
-    fontSize: 12 },
-  progressBar:{ 
-    height: 6, 
-    backgroundColor: '#5A6B90', 
-    borderRadius: 5, 
-    marginTop: 10 },
-  progress:{ 
-    height: 6, 
-    backgroundColor: '#F5F5F5', 
-    borderRadius: 5 },
-  remaining:{ 
-    color: '#FFF', 
-    marginTop: 6, 
-    fontSize: 12 },
-  sectionTitle:{ 
-    fontSize: 20, 
-    fontWeight: 'bold', 
-    color: '#0F2557', 
-    margin: 15 },
-  categoryCard:{ 
-    backgroundColor: '#0d2b3f', 
-    marginHorizontal: 10, 
-    marginVertical: 6, 
-    borderRadius: 10, 
-    padding: 10 },
-  categoryTitle:{ 
-    color: '#FFF', 
-    fontSize: 14, 
-    fontWeight: 'bold', 
-    marginBottom: 6 },
-  activityCard:{ 
-    backgroundColor: '#FFF', 
-    marginHorizontal: 10, 
-    marginBottom: 8, 
-    padding: 15, 
-    borderRadius: 10, 
-    borderLeftWidth: 4, 
-    borderLeftColor: '#F97316' },
-  activityTitle:{ 
-    fontWeight: 'bold', 
-    fontSize: 16 },
-  activitySub:{ 
-    color: '#6B7280', 
-    fontSize: 12, 
-    marginTop: 2 },
-  activityStatus:{ 
-    marginTop: 5, 
-    fontWeight: 'bold', 
-    fontSize: 13 },
+  container:     { flex: 1, backgroundColor: '#F3F4F6' },
+  center:        { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  header:        { backgroundColor: '#0F2557', paddingTop: 60, paddingBottom: 10, borderBottomWidth: 3, borderBottomColor: '#F97316' },
+  headerTitle:   { color: '#FFF', fontSize: 24, fontWeight: 'bold', textAlign: 'center' },
+  headerSub:     { color: '#CBD5E1', fontSize: 13, textAlign: 'center', marginTop: 4 },
+  mainCard:      { backgroundColor: '#0F2557', margin: 10, borderRadius: 12, padding: 15 },
+  cardTitle:     { color: '#FFF', fontSize: 13, marginBottom: 6 },
+  row:           { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  hours:         { color: '#FFF', fontSize: 26, fontWeight: 'bold' },
+  total:         { fontSize: 18 },
+  circle:        { width: 50, height: 50, borderWidth: 2, borderColor: '#FFF', borderRadius: 25, justifyContent: 'center', alignItems: 'center' },
+  circleText:    { color: '#FFF', fontWeight: 'bold', fontSize: 12 },
+  progressBar:   { height: 6, backgroundColor: '#5A6B90', borderRadius: 5, marginTop: 10 },
+  progress:      { height: 6, backgroundColor: '#F5F5F5', borderRadius: 5 },
+  remaining:     { color: '#FFF', marginTop: 6, fontSize: 12 },
+  sectionTitle:  { fontSize: 20, fontWeight: 'bold', color: '#0F2557', margin: 15 },
+  categoryCard:  { backgroundColor: '#0d2b3f', marginHorizontal: 10, marginVertical: 6, borderRadius: 10, padding: 10 },
+  categoryTitle: { color: '#FFF', fontSize: 14, fontWeight: 'bold', marginBottom: 6 },
+  activityCard:  { backgroundColor: '#FFF', marginHorizontal: 10, marginBottom: 8, padding: 15, borderRadius: 10, borderLeftWidth: 4, borderLeftColor: '#F97316' },
+  activityTitle: { fontWeight: 'bold', fontSize: 16 },
+  activitySub:   { color: '#6B7280', fontSize: 12, marginTop: 2 },
+  activityStatus:{ marginTop: 5, fontWeight: 'bold', fontSize: 13 },
 });

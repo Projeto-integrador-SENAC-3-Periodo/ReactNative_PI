@@ -165,6 +165,7 @@ export default function EnviarAtividade() {
       <VisualizadorComprovante
         visible={verCertificado}
         url={arquivo?.uri}
+        mimeType={arquivo?.mimeType || arquivo?.type}
         onFechar={() => setVerCertificado(false)}
       />
 
@@ -203,7 +204,7 @@ export default function EnviarAtividade() {
             {/* STATUS OCR */}
             {ocrProcessando ? (
               <View style={s.ocrRow}>
-                <ActivityIndicator size="small" color="#7b95db" />
+                <ActivityIndicator size="small" color="#1D4ED8" />
                 <Text style={s.ocrProcessandoText}> Lendo comprovante...</Text>
               </View>
             ) : ocrResultado ? (
@@ -266,7 +267,7 @@ export default function EnviarAtividade() {
             )}
             {tipoSelecionado?.requisito ? (
               <View style={s.requisitoBox}>
-                <Text style={s.requisitoText}>{tipoSelecionado.requisito}</Text>
+                <Text style={s.requisitoText}>📋 {tipoSelecionado.requisito}</Text>
               </View>
             ) : null}
           </>
@@ -276,14 +277,14 @@ export default function EnviarAtividade() {
         <Text style={s.label}>
           Descrição
           {ocrResultado?.sucesso
-            ? <Text style={s.ocrLabel}> (preenchida pelo OCR ✓)</Text>
+            ? <Text style={s.ocrLabel}> (preenchida pelo OCR)</Text>
             : <Text style={s.optLabel}> (opcional)</Text>}
         </Text>
         <TextInput style={s.textArea} multiline numberOfLines={4}
           placeholder="Descreva sua atividade"
           value={descricao} onChangeText={setDescricao} />
         {ocrResultado?.sucesso
-          ? <Text style={s.fieldNote}>Pode editar caso necessário.</Text>
+          ? <Text style={s.fieldNote}>Você pode editar se necessário.</Text>
           : null}
 
         {/* HORAS */}
@@ -303,7 +304,7 @@ export default function EnviarAtividade() {
           onChangeText={setHoras}
         />
         {ocrResultado?.horasDetectadas
-          ? <Text style={s.fieldNote}>Pode corrigir se o valor estiver errado.</Text>
+          ? <Text style={s.fieldNote}>Você pode corrigir se o valor estiver errado.</Text>
           : null}
 
         <TouchableOpacity

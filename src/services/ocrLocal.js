@@ -1,7 +1,5 @@
-//  ocrLocal.js — OCR via OCR.space API (base64, Expo Go)
-
 const OCR_API_KEY = 'K87770023188957';
-const OCR_API_URL = 'https://api.ocr.space/parse/image';
+const OCR_API_URL = 'https://api.ocr.space/parse/image'; //endpoint
 
 export async function processarOcrLocal(uri) {
   try {
@@ -11,7 +9,7 @@ export async function processarOcrLocal(uri) {
     const blob     = await response.blob();
     const base64   = await blobToBase64(blob);
 
-    // Remove o prefixo "data:image/jpeg;base64," — OCR.space quer só os dados
+    // prefixo "data:image/jpeg;base64," — OCR.space quer só os dados
     const base64Data = base64.split(',')[1];
     const mimeType   = base64.split(';')[0].split(':')[1] || 'image/jpeg';
 
@@ -19,24 +17,25 @@ export async function processarOcrLocal(uri) {
     formData.append('apikey',            OCR_API_KEY);
     formData.append('base64Image',       `data:${mimeType};base64,${base64Data}`);
     formData.append('language',          'por');
-    formData.append('isOverlayRequired', 'false');
-    formData.append('scale',             'true');
-    formData.append('OCREngine',         '2');
+    formData.append('isOverlayRequired', 'false'); // coordenadas de posição
+    formData.append('scale',             'true'); //redimensionar
+    formData.append('OCREngine',         '2'); // mais preciso
 
     const ocrResponse = await fetch(OCR_API_URL, {
       method: 'POST',
       body:   formData,
     });
 
+    // resposta HTTP -> JavaScript 
     const data = await ocrResponse.json();
-    console.log('OCR.space raw:', JSON.stringify(data).substring(0, 400));
+    console.log('OCR.space raw:', JSON.stringify(data).substring(0, 400));//caracteres
 
     if (data.IsErroredOnProcessing || !data.ParsedResults?.length) {
       console.warn('OCR.space erro:', data.ErrorMessage);
       return vazio();
     }
 
-    const texto = data.ParsedResults[0].ParsedText || '';
+    const texto = data.ParsedResults[0].ParsedText || '';//extrai
     console.log('OCR texto:', texto.substring(0, 300));
 
     return {
@@ -51,12 +50,12 @@ export async function processarOcrLocal(uri) {
   }
 }
 
-function blobToBase64(blob) {
+function blobToBase64(blob) { //lê bytes
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    const reader = new FileReader();//fetch
     reader.onloadend = () => resolve(reader.result);
     reader.onerror   = reject;
-    reader.readAsDataURL(blob);
+    reader.readAsDataURL(blob); // obter o blob e converte com fileReader para base64
   });
 }
 
@@ -77,7 +76,7 @@ function detectarHoras(texto) {
     const m = texto.match(p);
     if (m) {
       const h = parseInt(m[1], 10);
-      if (h > 0 && h <= 1000) return h;
+      if (h > 0 && h <= 1000) return h;// descarta cpf ou matricula
     }
   }
   return null;
