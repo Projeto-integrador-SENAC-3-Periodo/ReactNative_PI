@@ -48,7 +48,7 @@ export default function EnviarAtividade() {
     if (tipo.horasMaximas && !horas) setHoras(String(tipo.horasMaximas));
   }
 
-  // ── Seleciona arquivo e dispara OCR ──
+  // Seleciona arquivo e dispara OCR 
   async function aoSelecionarArquivo(arq) {
     setArquivo(arq);
     setOcrResultado(null);
@@ -67,7 +67,7 @@ export default function EnviarAtividade() {
           setHoras(String(resultado.horasDetectadas));
         }
 
-        // Preenche descrição: data se encontrou, ou primeiras palavras do texto
+        // Preenche descrição: data se encontrou
         if (resultado.dataDetectada) {
           setDescricao('Certificado emitido em ' + resultado.dataDetectada);
         } else if (resultado.textoCompleto) {

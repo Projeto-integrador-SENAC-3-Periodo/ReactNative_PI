@@ -21,6 +21,11 @@ export default function LoginScreen({ navigation }) {
     try {
       const response = await login(identificador.trim(), senha);
 
+      if (response.role !== 'ALUNO') {
+        Alert.alert('Acesso negado', 'Este aplicativo é exclusivo para alunos.');
+        return;
+      }
+
       // signIn atualiza o contexto → App.js troca automaticamente para as tabs
       signIn(response);
 
